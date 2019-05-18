@@ -9,6 +9,7 @@
 
 def is_permutation(a: str, b: str) -> bool:
     # Нужно проверить, являются ли строчки 'a' и 'b' перестановками
+    return True if ''.join(sorted(a)) == ''.join(sorted(b)) else False
 
 
 assert is_permutation('baba', 'abab')
