@@ -118,7 +118,6 @@ for i, number_of_nucleotides in enumerate(num_of_nucleotides_lst):
     for key in number_of_nucleotides:
         nucleotides_file.write(key+' - '+str(number_of_nucleotides[key])+' ')
     nucleotides_file.write('\n')
-    print(description_lst[i], number_of_nucleotides)
     plot_hist(number_of_nucleotides, description_lst[i], xlabel, ylabel)
 
 # Close nucleotides.txt file
