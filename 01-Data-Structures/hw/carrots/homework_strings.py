@@ -88,21 +88,21 @@ rna_file.close()
 
 # Count number of nucleotides for which gene
 dna_file.seek(0)
-dna = ''
+dna_lines = ''
 num_of_nucleotides_lst = []
 description_lst = []
 for line in dna_file:
     if line[0] == '>':
-        if dna:
-            num_of_nucleotides_lst.append(count_nucleotides(dna))
-            dna = ''
+        if dna_lines:
+            num_of_nucleotides_lst.append(count_nucleotides(dna_lines))
+            dna_lines = ''
             description_lst.append(line.replace('>', ''))
         else:
             description_lst.append(line.replace('>', ''))
     else:
-        dna += line
+        dna_lines += line
 else:
-    num_of_nucleotides_lst.append(count_nucleotides(dna))
+    num_of_nucleotides_lst.append(count_nucleotides(dna_lines))
 
 # Close dna.fasta file
 dna_file.close()
@@ -110,9 +110,9 @@ dna_file.close()
 # Print number of nucleotides for which gene and plot histogram
 xlabel = 'Nucleotides'
 ylabel = 'Frequency'
-for i, num_of_nucleotides in enumerate(num_of_nucleotides_lst):
-    print(description_lst[i], num_of_nucleotides)
-    plot_hist(num_of_nucleotides, description_lst[i], xlabel, ylabel)
+for i, number_of_nucleotides in enumerate(num_of_nucleotides_lst):
+    print(description_lst[i], number_of_nucleotides)
+    plot_hist(number_of_nucleotides, description_lst[i], xlabel, ylabel)
 
 # Open rna_codon_table.txt file
 rna_codon_file = open('files/rna_codon_table.txt', 'r')
@@ -137,9 +137,9 @@ for line in rna_file:
     if line[0] == '>':
         protein_file.write(line)
     else:
-        protein = translate_rna_to_protein(line, codon_dict)
-        protein = protein.replace('Stop', '')      # Remove Stop if necessary
-        protein_file.write(protein+'\n')
+        prot_line = translate_rna_to_protein(line, codon_dict)
+        prot_line = prot_line.replace('Stop', '')   # Remove Stop if necessary
+        protein_file.write(prot_line+'\n')
 
 # Close protein.fasta file
 protein_file.close()
