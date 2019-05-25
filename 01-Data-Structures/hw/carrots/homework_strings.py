@@ -107,12 +107,22 @@ else:
 # Close dna.fasta file
 dna_file.close()
 
-# Print number of nucleotides for which gene and plot histogram
+# Create nucleotides.txt file
+nucleotides_file = open('files/nucleotides.txt', 'w')
+
+# Write number of nucleotides to the nucleotides.txt file and plot histogram
 xlabel = 'Nucleotides'
 ylabel = 'Frequency'
 for i, number_of_nucleotides in enumerate(num_of_nucleotides_lst):
+    nucleotides_file.write(description_lst[i])
+    for key in number_of_nucleotides:
+        nucleotides_file.write(key+' - '+str(number_of_nucleotides[key])+' ')
+    nucleotides_file.write('\n')
     print(description_lst[i], number_of_nucleotides)
     plot_hist(number_of_nucleotides, description_lst[i], xlabel, ylabel)
+
+# Close nucleotides.txt file
+nucleotides_file.close()
 
 # Open rna_codon_table.txt file
 rna_codon_file = open('files/rna_codon_table.txt', 'r')
