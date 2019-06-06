@@ -11,7 +11,6 @@ def modified_func(func, *fixated_args, **fixated_kwargs):
         A func implementation of {name}
         with pre-applied arguments being:
         {fixated_args}, {fixated_kwargs}
-        <перечисление имен и значений fixated_args и fixated_kwargs>
         source_code:
         {source}
         """
