@@ -59,8 +59,7 @@ class Student:
     def do_homework(homework):
         if homework.is_active():
             return homework
-        else:
-            return 'You are late'
+        print('You are late')
 
 
 class Teacher:
