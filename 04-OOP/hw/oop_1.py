@@ -41,10 +41,10 @@ import datetime
 
 
 class Homework:
-    def __init__(self, text, deadline, created):
+    def __init__(self, text: str, days: int):
         self.text = text
-        self.deadline = deadline
-        self.created = created
+        self.deadline = datetime.timedelta(days)
+        self.created = datetime.datetime.now()
 
     def is_active(self):
         return (datetime.datetime.now() - self.created) < self.deadline
@@ -69,9 +69,8 @@ class Teacher:
         self.first_name = first_name
 
     @staticmethod
-    def create_homework(text, days):
-        deadline = datetime.timedelta(days)
-        return Homework(text, deadline, datetime.datetime.now())
+    def create_homework(text: str, days: int):
+        return Homework(text, days)
 
 
 if __name__ == '__main__':
@@ -89,6 +88,5 @@ if __name__ == '__main__':
     create_homework_too = teacher.create_homework
     oop_homework = create_homework_too('create 2 simple classes', 5)
     oop_homework.deadline  # 5 days, 0:00:00
-
     student.do_homework(oop_homework)
     student.do_homework(expired_homework)  # You are late
