@@ -11,7 +11,28 @@ reset_instances_counter - сбросить счетчик экземпляров
 
 
 def instances_counter(cls):
-    """Some code"""
+    per = 0
+    original_init = cls.__init__
+
+    def inner(*args, **kwargs):
+        nonlocal per
+        per += 1
+        original_init(*args, **kwargs)
+
+    def get_created_instances(*args, **kwargs):
+        print(per)
+        return per
+
+    def reset_instances_counter(*args, **kwargs):
+        nonlocal per
+        temp = per
+        per = 0
+        print(temp)
+        return temp
+
+    cls.get_created_instances = get_created_instances
+    cls.reset_instances_counter = reset_instances_counter
+    cls.__init__ = inner
     return cls
 
 
