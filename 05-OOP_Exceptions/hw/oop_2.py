@@ -53,6 +53,66 @@ import datetime
 from collections import defaultdict
 
 
+class DeadlineError(Exception):
+    pass
+
+
+class Person:
+    def __init__(self, last_name, first_name):
+        self.last_name = last_name
+        self.first_name = first_name
+
+
+class Homework:
+    def __init__(self, text: str, days: int):
+        self.text = text
+        self.deadline = datetime.timedelta(days)
+        self.created = datetime.datetime.now()
+
+    def is_active(self):
+        return (datetime.datetime.now() - self.created) < self.deadline
+
+
+class HomeworkResult:
+    def __init__(self, homework, solution, student):
+        if not isinstance(homework, Homework):
+            raise TypeError('You gave a not Homework object')
+        self.homework = homework
+        self.solution = solution
+        self.author = student
+        self.created = datetime.datetime.now()
+
+
+class Student(Person):
+    def do_homework(self, homework, solution):
+        if homework.is_active():
+            return HomeworkResult(homework, solution, self)
+        raise DeadlineError('You are late')
+
+
+class Teacher(Person):
+    homework_done = defaultdict(list)
+
+    @staticmethod
+    def create_homework(text: str, days: int):
+        return Homework(text, days)
+
+    def check_homework(self, hw_res):
+        if len(hw_res.solution) >= 5:
+            if hw_res not in self.homework_done[hw_res.homework]:
+                self.homework_done[hw_res.homework].append(hw_res)
+            return True
+        else:
+            return False
+
+    @classmethod
+    def reset_results(cls, hw=None):
+        if hw:
+            cls.homework_done[hw] = []
+        else:
+            cls.homework_done = defaultdict(list)
+
+
 if __name__ == '__main__':
     opp_teacher = Teacher('Daniil', 'Shadrin')
     advanced_python_teacher = Teacher('Aleksandr', 'Smetanin')
